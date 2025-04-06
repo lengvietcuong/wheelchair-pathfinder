@@ -1,0 +1,18 @@
+,has_accessible_restroom,has_accessible_parking,has_accessible_entrance,has_rest_area
+Central Park,True,False,True,True
+Robert Lehman Collection Library,True,True,True,True
+Great Lawn Softball Field #1,False,False,False,True
+Shakespeare Garden,False,True,True,False
+The Central Park Turtle Pond,True,False,False,False
+Petrie Court Cafe,False,False,False,True
+South Gate House,True,False,True,True
+Summit Rock,True,False,True,True
+Seneca Village Site,False,True,True,True
+Bridge No. 27,True,True,True,True
+Tanner spring,False,True,True,True
+Oak Bridge,True,False,False,False
+Pinetum Playground,True,False,True,False
+The Beresford,False,True,False,False
+Cedar Hill,False,True,True,False
+Noi Due Cafe,True,True,True,False
+Dino Store,True,False,True,True
