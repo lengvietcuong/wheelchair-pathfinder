@@ -1,27 +1,35 @@
+"""
+Random Accessibility Features Generator for Wheelchair Navigation.
+"""
+
 import logging
 import random
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict
 
 import numpy as np
 import pandas as pd
 
+from .map_to_matrix import ADJACENCY_MATRIX_PATH
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+
+DATA_DIRECTORY = Path("data")
+SLOPES_PATH = DATA_DIRECTORY / "adjacency_matrix_slope.csv"
+KERB_RAMPS_PATH = DATA_DIRECTORY / "adjacency_matrix_kerb_ramps.csv"
+SIDEWALK_WIDTH_PATH = DATA_DIRECTORY / "adjacency_matrix_sidewalk_width.csv"
+NODE_FEATURES_PATH = DATA_DIRECTORY / "adjacency_matrix_node_features.csv"
+
+
 logger = logging.getLogger(__name__)
 
 
-def enhance_map_with_accessibility(
-    adjacency_matrix_file: str, output_prefix: str, seed: int = 42
+def generate_accessibility_features(
+    seed: int = 42,
 ) -> Dict[str, pd.DataFrame]:
     """
     Enhance a map's adjacency matrix with random accessibility features and save to CSV files.
 
     Parameters:
-        adjacency_matrix_file (str): Path to CSV file with adjacency matrix.
-        output_prefix (str): Prefix for output CSV filenames.
         seed (int, optional): Random seed for reproducibility. Defaults to 42.
 
     Returns:
@@ -32,7 +40,7 @@ def enhance_map_with_accessibility(
     np.random.seed(seed)
 
     # Load adjacency matrix and replace 'inf'
-    df = pd.read_csv(adjacency_matrix_file, index_col=0).replace("inf", np.inf)
+    df = pd.read_csv(ADJACENCY_MATRIX_PATH, index_col=0).replace("inf", np.inf)
     locations = df.index.tolist()
 
     # Initialize feature matrices
@@ -63,28 +71,15 @@ def enhance_map_with_accessibility(
     node_features_df = pd.DataFrame.from_dict(node_features, orient="index")
 
     # Compile results
-    results: Dict[str, pd.DataFrame] = {
-        "slope": slope_df,
-        "kerb_ramps": kerb_ramps_df,
-        "sidewalk_width": sidewalk_width_df,
-        "node_features": node_features_df,
+    results: Dict[Path, pd.DataFrame] = {
+        SLOPES_PATH: slope_df,
+        KERB_RAMPS_PATH: kerb_ramps_df,
+        SIDEWALK_WIDTH_PATH: sidewalk_width_df,
+        NODE_FEATURES_PATH: node_features_df,
     }
 
     # Save each DataFrame to CSV
-    output_dir = Path(output_prefix).parent
-    prefix = Path(output_prefix).stem
-    for name, table in results.items():
-        filename = output_dir / f"{prefix}_{name}.csv"
-        table.to_csv(filename)
-        logging.info("Saved %s", filename)
+    for file_path, table in results.items():
+        table.to_csv(file_path)
+        logging.info("Saved %s", file_path)
     return results
-
-
-def main(seed: Optional[int] = 42) -> None:
-    input_file = Path("data") / "adjacency_matrix.csv"
-    output_prefix = Path("data") / "adjacency_matrix"
-    enhance_map_with_accessibility(input_file, output_prefix, seed)
-
-
-if __name__ == "__main__":
-    main()
