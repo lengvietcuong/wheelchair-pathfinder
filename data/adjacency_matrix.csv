@@ -1,18 +1,24 @@
-,Central Park,Robert Lehman Collection Library,Great Lawn Softball Field #1,Shakespeare Garden,The Central Park Turtle Pond,Petrie Court Cafe,South Gate House,Summit Rock,Seneca Village Site,Bridge No. 27,Tanner spring,Oak Bridge,Pinetum Playground,The Beresford,Cedar Hill,Noi Due Cafe,Dino Store
-Central Park,0.0,321.4668904599308,247.79576566942782,469.3839836404658,399.00768262504135,inf,266.94137691504426,380.6812208160875,inf,inf,363.6789299560363,inf,inf,inf,587.6229487112357,682.7621514554337,inf
-Robert Lehman Collection Library,321.4668904599308,0.0,inf,inf,249.54916951457614,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf
-Great Lawn Softball Field #1,247.79576566942782,inf,0.0,233.53838325017455,187.06888118936905,308.8197773302629,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf
-Shakespeare Garden,469.3839836404658,inf,233.53838325017455,0.0,inf,inf,inf,inf,476.78051679306867,inf,294.1178116362646,inf,inf,361.1042623809659,inf,inf,inf
-The Central Park Turtle Pond,399.00768262504135,249.54916951457614,187.06888118936905,inf,0.0,inf,inf,inf,inf,inf,inf,399.0442255783122,inf,inf,inf,inf,547.1900347493003
-Petrie Court Cafe,inf,inf,308.8197773302629,inf,inf,0.0,388.5431392018454,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf
-South Gate House,266.94137691504426,inf,inf,inf,inf,388.5431392018454,0.0,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf
-Summit Rock,380.6812208160875,inf,inf,inf,inf,inf,inf,0.0,130.07925357028873,inf,inf,inf,inf,202.85610402989752,inf,inf,366.0728785940788
-Seneca Village Site,inf,inf,inf,476.78051679306867,inf,inf,inf,130.07925357028873,0.0,234.10357745242285,inf,inf,inf,inf,inf,inf,inf
-Bridge No. 27,inf,inf,inf,inf,inf,inf,inf,inf,234.10357745242285,0.0,389.0768033511127,789.1033042669958,inf,inf,inf,inf,inf
-Tanner spring,363.6789299560363,inf,inf,294.1178116362646,inf,inf,inf,inf,inf,389.0768033511127,0.0,435.1389084753034,inf,inf,657.0431917538476,inf,inf
-Oak Bridge,inf,inf,inf,inf,399.0442255783122,inf,inf,inf,inf,789.1033042669958,435.1389084753034,0.0,inf,416.59258505638337,496.44072268925106,inf,inf
-Pinetum Playground,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf,inf,inf,inf
-The Beresford,inf,inf,inf,361.1042623809659,inf,inf,inf,202.85610402989752,inf,inf,inf,416.59258505638337,inf,0.0,inf,283.9449448393139,inf
-Cedar Hill,587.6229487112357,inf,inf,inf,inf,inf,inf,inf,inf,inf,657.0431917538476,496.44072268925106,inf,inf,0.0,1034.8855859104046,inf
-Noi Due Cafe,682.7621514554337,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,283.9449448393139,1034.8855859104046,0.0,inf
-Dino Store,inf,inf,inf,inf,547.1900347493003,inf,inf,366.0728785940788,inf,inf,inf,inf,inf,inf,inf,inf,0.0
+,Central Park,Robert Lehman Collection Library,Great Lawn Softball Field #1,Shakespeare Garden,The Central Park Turtle Pond,Petrie Court Cafe,South Gate House,Summit Rock,Seneca Village Site,Bridge No. 27,Tanner spring,Oak Bridge,Pinetum Playground,The Beresford,Cedar Hill,Noi Due Cafe,Dino Store,East Pinetum,The Triplets Bridge,Arthur Ross Pinetum,The Ramble,Greywacke Arch,Neue Galerie New York
+Central Park,0.0,321.4668904599308,247.79576566942782,469.3839836404658,399.00768262504135,inf,266.94137691504426,380.6812208160875,inf,inf,363.6789299560363,inf,inf,inf,587.6229487112357,682.7621514554337,inf,inf,inf,inf,inf,inf,inf
+Robert Lehman Collection Library,321.4668904599308,0.0,inf,inf,249.54916951457614,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,364.55867621643523
+Great Lawn Softball Field #1,247.79576566942782,inf,0.0,233.53838325017455,187.06888118936905,308.8197773302629,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,346.6667058071839,inf,inf,inf,inf,inf
+Shakespeare Garden,469.3839836404658,inf,233.53838325017455,0.0,inf,inf,inf,inf,476.78051679306867,inf,294.1178116362646,inf,inf,361.1042623809659,inf,inf,inf,inf,246.79484309990167,inf,inf,inf,inf
+The Central Park Turtle Pond,399.00768262504135,249.54916951457614,187.06888118936905,inf,0.0,inf,inf,inf,inf,inf,inf,399.0442255783122,inf,inf,inf,inf,547.1900347493003,inf,inf,inf,inf,inf,inf
+Petrie Court Cafe,inf,inf,308.8197773302629,inf,inf,0.0,388.5431392018454,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,95.44387636911301,421.7649605313434
+South Gate House,266.94137691504426,inf,inf,inf,inf,388.5431392018454,0.0,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,212.73535100118607
+Summit Rock,380.6812208160875,inf,inf,inf,inf,inf,inf,0.0,130.07925357028873,inf,inf,inf,inf,202.85610402989752,inf,inf,366.0728785940788,inf,inf,inf,inf,inf,inf
+Seneca Village Site,inf,inf,inf,476.78051679306867,inf,inf,inf,130.07925357028873,0.0,234.10357745242285,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf
+Bridge No. 27,inf,inf,inf,inf,inf,inf,inf,inf,234.10357745242285,0.0,389.0768033511127,789.1033042669958,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf
+Tanner spring,363.6789299560363,inf,inf,294.1178116362646,inf,inf,inf,inf,inf,389.0768033511127,0.0,435.1389084753034,inf,inf,657.0431917538476,inf,inf,inf,inf,inf,inf,inf,inf
+Oak Bridge,inf,inf,inf,inf,399.0442255783122,inf,inf,inf,inf,789.1033042669958,435.1389084753034,0.0,inf,416.59258505638337,496.44072268925106,inf,inf,inf,inf,inf,192.44835113453829,inf,inf
+Pinetum Playground,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf,inf,inf,inf,inf,inf,54.89992309744183,inf,inf,inf
+The Beresford,inf,inf,inf,361.1042623809659,inf,inf,inf,202.85610402989752,inf,inf,inf,416.59258505638337,inf,0.0,inf,283.9449448393139,inf,inf,inf,inf,inf,inf,inf
+Cedar Hill,587.6229487112357,inf,inf,inf,inf,inf,inf,inf,inf,inf,657.0431917538476,496.44072268925106,inf,inf,0.0,1034.8855859104046,inf,inf,inf,inf,inf,inf,inf
+Noi Due Cafe,682.7621514554337,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,283.9449448393139,1034.8855859104046,0.0,inf,inf,inf,inf,inf,inf,inf
+Dino Store,inf,inf,inf,inf,547.1900347493003,inf,inf,366.0728785940788,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf,inf,inf,inf,inf,inf
+East Pinetum,inf,inf,346.6667058071839,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf,inf,inf,inf,267.6505158651621
+The Triplets Bridge,inf,inf,inf,246.79484309990167,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf,inf,inf,inf
+Arthur Ross Pinetum,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,54.89992309744183,inf,inf,inf,inf,inf,inf,0.0,inf,inf,inf
+The Ramble,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,192.44835113453829,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf,878.1303486218918
+Greywacke Arch,inf,inf,inf,inf,inf,95.44387636911301,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,0.0,inf
+Neue Galerie New York,inf,364.55867621643523,inf,inf,inf,421.7649605313434,212.73535100118607,inf,inf,inf,inf,inf,inf,inf,inf,inf,inf,267.6505158651621,inf,inf,878.1303486218918,inf,0.0
