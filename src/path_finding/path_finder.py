@@ -3,57 +3,12 @@ Base Class for Pathfinding Algorithms.
 """
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Dict, List, NamedTuple, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
 import pandas as pd
 
-
-class SearchResult(NamedTuple):
-    """Result of a path search operation.
-
-    Attributes:
-        path (List[str]): The list of nodes representing the path from the start to the goal.
-        cost (float): The total cost associated with the found path.
-        nodes_created (int): The number of nodes generated during the search.
-    """
-
-    path: List[str]
-    cost: float
-    nodes_created: int
-
-
-class AccessibilitySetting(Enum):
-    """Enum to set how accessibility features are considered in pathfinding.
-
-    Attributes:
-        NONE (int): Ignore accessibility.
-        COST (int): Calculate costs based on accessibility features.
-        COST_AND_HEURISTIC (int): Calculate both costs and heuristic based on accessibility features.
-    """
-
-    NONE = 0
-    COST = 1
-    COST_AND_HEURISTIC = 2
-
-
-@dataclass(order=True)
-class Move:
-    """Represents a move between nodes with priority for the frontier.
-
-    Attributes:
-        source (str): The identifier of the source node.
-        destination (str): The identifier of the destination node.
-        priority (float): The priority value used by the priority queue (f-score).
-        index (int): Tie-breaker index for moves with equal priority.
-    """
-
-    source: str = field(compare=False)
-    destination: str = field(compare=False)
-    priority: float = field(default=0.0)
-    index: int = field(compare=False, default=0)
+from .custom_types import Move, SearchResult
 
 
 def calculate_accessibility_costs(
@@ -139,7 +94,7 @@ class PathFinder(ABC):
         self._nodes = set(adjacency_matrix.index)
 
         self._came_from: Dict[str, Optional[str]] = {}
-        self._nodes_created: Set[str] = set()
+        self._nodes_created_count: Set[str] = set()
         self._move_index = 0
 
         self._accessibility_adjacency_matrix: Optional[pd.DataFrame] = None
@@ -204,7 +159,7 @@ class PathFinder(ABC):
                     index=self._move_index,
                 )
             )
-            self._nodes_created.add(neighbor)
+            self._nodes_created_count.add(neighbor)
             self._move_index += 1
 
         return moves
@@ -233,7 +188,7 @@ class PathFinder(ABC):
         Reset internal search state for a new pathfinding operation.
         """
         self._came_from = {}
-        self._nodes_created = set()
+        self._nodes_created_count = set()
         self._move_index = 0
 
     @abstractmethod
@@ -241,7 +196,7 @@ class PathFinder(ABC):
         self,
         start: str,
         goal: str,
-        accessibility: AccessibilitySetting = AccessibilitySetting.NONE,
+        consider_accessibility: bool = True,
     ) -> SearchResult:
         """
         Abstract method to find a path from start to goal.
@@ -249,7 +204,7 @@ class PathFinder(ABC):
         Args:
             start (str): Identifier of the start node.
             goal (str): Identifier of the goal node.
-            accessibility (AccessibilitySetting): How to consider accessibility features.
+            consider_accessibility (bool): Whether to consider wheelchair accessibility when calculating the cost and heuristic. Defaults to True.
 
         Returns:
             SearchResult: The result containing path, cost, and nodes created.
