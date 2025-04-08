@@ -17,7 +17,7 @@ from map_creation.map_to_matrix import (
     NODES_COORDINATES_PATH,
     extract_kmz_file,
 )
-from path_finding.a_star import AStar
+from path_finding.a_star import AccessibilitySetting, AStar
 
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
@@ -102,7 +102,9 @@ def main():
         f"Finding path from '{start}' to '{goal}' "
         "with wheelchair accessibility considered..."
     )
-    result = pathfinder.find_path(start, goal)
+    result = pathfinder.find_path(
+        start, goal, accessibility=AccessibilitySetting.COST_AND_HEURISTIC
+    )
     logger.info(f"Path: {result.path}")
     logger.info(f"Cost: {result.cost:.2f}")
     logger.info(f"Number of nodes created: {result.nodes_created}")

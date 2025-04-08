@@ -1,5 +1,10 @@
+"""
+Base Class for Pathfinding Algorithms.
+"""
+
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import Dict, List, NamedTuple, Optional, Set, Tuple
 
 import numpy as np
@@ -20,6 +25,20 @@ class SearchResult(NamedTuple):
     nodes_created: int
 
 
+class AccessibilitySetting(Enum):
+    """Enum to set how accessibility features are considered in pathfinding.
+
+    Attributes:
+        NONE (int): Ignore accessibility.
+        COST (int): Calculate costs based on accessibility features.
+        COST_AND_HEURISTIC (int): Calculate both costs and heuristic based on accessibility features.
+    """
+
+    NONE = 0
+    COST = 1
+    COST_AND_HEURISTIC = 2
+
+
 @dataclass(order=True)
 class Move:
     """Represents a move between nodes with priority for the frontier.
@@ -33,7 +52,7 @@ class Move:
 
     source: str = field(compare=False)
     destination: str = field(compare=False)
-    priority: float
+    priority: float = field(default=0.0)
     index: int = field(compare=False, default=0)
 
 
@@ -42,9 +61,9 @@ def calculate_accessibility_costs(
     slope_df: pd.DataFrame,
     kerb_ramps_df: pd.DataFrame,
     sidewalk_width_df: pd.DataFrame,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, float]:
     """
-    Calculate accessibility-adjusted costs based on various accessibility features.
+    Calculate accessibility-accessibility costs based on various accessibility features.
 
     Args:
         adjacency_matrix (pd.DataFrame): Base adjacency matrix with distances between nodes.
@@ -53,17 +72,20 @@ def calculate_accessibility_costs(
         sidewalk_width_df (pd.DataFrame): Matrix of sidewalk widths (in meters) between nodes.
 
     Returns:
-        pd.DataFrame: Accessibility-adjusted cost matrix combining distance, slope, kerb ramps, and width factors.
+        Tuple[pd.DataFrame, float]: A tuple containing:
+            - Accessibility-accessibility cost matrix combining distance, slope, kerb ramps, and width factors.
+            - Minimum cost multiplier (compared to base costs).
     """
     locations = adjacency_matrix.index.tolist()
     accessibility_df = pd.DataFrame(
         index=locations, columns=locations, dtype=float
     ).fillna(np.inf)
+    min_cost_multiplier = float("inf")
 
     for i in locations:
         for j in locations:
             distance = adjacency_matrix.loc[i, j]
-            if distance == np.inf or distance <= 0:
+            if np.isinf(distance) or distance <= 0:  # Valid value check
                 continue
 
             slope = slope_df.loc[i, j]
@@ -79,11 +101,13 @@ def calculate_accessibility_costs(
             # Width factor: Narrower sidewalks increase cost inversely
             width_factor = max(1, 1.2 / width)
 
-            accessibility_df.loc[i, j] = (
-                distance * slope_factor * kerb_factor * width_factor
-            )
+            cost_multiplier = slope_factor * kerb_factor * width_factor
+            accessibility_df.loc[i, j] = distance * cost_multiplier
+            min_cost_multiplier = min(min_cost_multiplier, cost_multiplier)
 
-    return accessibility_df
+    if np.isinf(min_cost_multiplier):
+        min_cost_multiplier = 1.0
+    return accessibility_df, min_cost_multiplier
 
 
 class PathFinder(ABC):
@@ -118,20 +142,25 @@ class PathFinder(ABC):
         self._nodes_created: Set[str] = set()
         self._move_index = 0
 
+        self._accessibility_adjacency_matrix: Optional[pd.DataFrame] = None
+        self._accessibility_cost_multiplier: float = 1.0
+
         has_accessibility_features = (
             slope_matrix is not None
             and kerb_ramps_matrix is not None
             and sidewalk_width_matrix is not None
         )
-        if has_accessibility_features:
-            self._adjusted_adjacency_matrix = calculate_accessibility_costs(
-                adjacency_matrix,
+        if not has_accessibility_features:
+            return
+        # Account for accessibility features
+        self._accessibility_adjacency_matrix, self._accessibility_cost_multiplier = (
+            calculate_accessibility_costs(
+                self._base_adjacency_matrix,
                 slope_matrix,
                 kerb_ramps_matrix,
                 sidewalk_width_matrix,
             )
-        else:
-            self._adjusted_adjacency_matrix = None
+        )
 
     def _is_valid_move(self, source: str, destination: str) -> bool:
         """
@@ -144,13 +173,13 @@ class PathFinder(ABC):
         Returns:
             bool: True if move is valid and neighbor has not been visited; False otherwise.
         """
-        return (
-            source in self._nodes
-            and destination in self._nodes
-            and source != destination
-            and self._base_adjacency_matrix.loc[source, destination] != np.inf
-            and destination not in self._came_from
+        nodes_exist = source in self._nodes and destination in self._nodes
+        path_exists = source != destination and not np.isinf(
+            self._base_adjacency_matrix.loc[source, destination]
         )
+        is_visited = destination in self._came_from
+
+        return nodes_exist and path_exists and not is_visited
 
     def _expand(self, node: str) -> List[Move]:
         """
@@ -208,13 +237,19 @@ class PathFinder(ABC):
         self._move_index = 0
 
     @abstractmethod
-    def find_path(self, start: str, goal: str) -> SearchResult:
+    def find_path(
+        self,
+        start: str,
+        goal: str,
+        accessibility: AccessibilitySetting = AccessibilitySetting.NONE,
+    ) -> SearchResult:
         """
         Abstract method to find a path from start to goal.
 
         Args:
             start (str): Identifier of the start node.
             goal (str): Identifier of the goal node.
+            accessibility (AccessibilitySetting): How to consider accessibility features.
 
         Returns:
             SearchResult: The result containing path, cost, and nodes created.
