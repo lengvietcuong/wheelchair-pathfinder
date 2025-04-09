@@ -20,11 +20,12 @@ from path_finding.a_star import AStar
 from path_finding.benchmark import run_full_benchmark
 
 
+WHEELCHAIR_SPEED_KM_PER_H = 4.0
 TEST_CASE_COUNT = 20
 RUNS_PER_TEST_CASE = 5
 
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(name)s - %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -97,7 +98,7 @@ def main():
             == "y"
         )
 
-        # Run the path finder and display the outputs
+        # Run the path finder
         path_finder = AStar(
             adjacency_matrix=adjacency_matrix,
             node_coordinates=node_coordinates,
@@ -108,9 +109,17 @@ def main():
         result = path_finder.find_path(
             start, goal, consider_accessibility=consider_accessibility
         )
+        estimated_time = result.distance / (WHEELCHAIR_SPEED_KM_PER_H * 1_000)
+        
+        # Display the results
         print(f"\nPath: {" → ".join(result.path)}")
-        print(f"Cost: {result.cost:.2f}")
-        print(f"Number of nodes created: {result.nodes_created_count}")
+        print(f"Distance: {result.distance:.2f} (meters)")
+        print(f"Estimated time: {estimated_time:.2f} (hours)")
+        
+        print("\nTechnical details:")
+        print(f"  - Cost: {result.cost:.2f}")
+        print(f"  - Number of nodes created: {result.nodes_created_count}")
+        print(f"  - Number of nodes explored: {result.nodes_explored_count}")
 
     def handle_run_benchmarks():
         """Run the benchmarks for the path finder and display the average results."""

@@ -47,9 +47,10 @@ def run_benchmark(test_case: TestCase) -> BenchmarkResult:
         start=test_case.start,
         goal=test_case.goal,
         path=search_result.path,
-        path_cost=search_result.cost,
-        path_length=len(search_result.path),
+        distance=search_result.distance,
+        cost=search_result.cost,
         nodes_created_count=search_result.nodes_created_count,
+        nodes_explored_count=search_result.nodes_explored_count,
         execution_time_ms=execution_time_ms,
     )
 
@@ -160,9 +161,10 @@ def run_full_benchmark(
         valid_paths.groupby(["algorithm", "consider_accessibility"])
         .agg(
             {
-                "path_cost": "mean",
-                "path_length": "mean",
+                "distance": "mean",
+                "cost": "mean",
                 "nodes_created_count": "mean",
+                "nodes_explored_count": "mean",
                 "execution_time_ms": "mean",
             }
         )

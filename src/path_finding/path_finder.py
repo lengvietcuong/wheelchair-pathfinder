@@ -189,7 +189,7 @@ class PathFinder(ABC):
         current = goal
 
         while self._came_from.get(current) is not None:
-            current = self._came_from[current]  # type: ignore
+            current = self._came_from[current]
             path.append(current)
 
         return list(reversed(path))

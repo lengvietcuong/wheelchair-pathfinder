@@ -59,10 +59,18 @@ class AStar(PathFinder):
 
             if move.destination == goal:  # At goal node
                 logger.debug("Found goal node. Returing result")
+
+                path = self._reconstruct_path(goal)
+                distance = sum(
+                    self._base_adjacency_matrix.loc[path[i], path[i + 1]]
+                    for i in range(len(path) - 1)
+                )
                 return SearchResult(
                     path=self._reconstruct_path(goal),
+                    distance=distance,
                     cost=g_scores[goal],
                     nodes_created_count=len(self._nodes_created),
+                    nodes_explored_count=len(self._came_from),
                 )
 
             # Add neighbors to frontier
@@ -91,5 +99,9 @@ class AStar(PathFinder):
 
         logger.debug(f"No path found (explored {len(self._came_from)} nodes)")
         return SearchResult(
-            path=[], cost=float("inf"), nodes_created_count=len(self._nodes_created)
+            path=[],
+            distance=float("inf"),
+            cost=float("inf"),
+            nodes_created_count=len(self._nodes_created),
+            nodes_explored_count=len(self._came_from),
         )
