@@ -92,9 +92,10 @@ def main():
     def handle_run_path_finder():
         """Take user input for start and goal locations, run the path finder, and display the outputs."""
 
+        # Select algorithm
         print("Available algorithms:")
         for index, algorithm in enumerate(PATH_FINDERS, start=1):
-            print(f"{index}: {algorithm.value}")
+            print(f"{index}. {algorithm.value}")
 
         algorithm_index = int(input("\n>>> Your choice: ").strip()) - 1
         path_finders = list(PATH_FINDERS.values())
@@ -106,14 +107,23 @@ def main():
             sidewalk_width_matrix=sidewalk_width_matrix,
         )
 
-        start = input("Enter start location (e.g. Noi Due Cafe): ").strip()
-        goal = input(
-            "Enter goal location (e.g. Robert Lehman Collection Library): "
-        ).strip()
+        # Select start and goal locations
+        print("\nAvailable locations:")
+        for index, location in enumerate(adjacency_matrix.index, start=1):
+            print(f"{index}. {location}")
+
+        start_index = int(input("\n>>> Enter start location: ").strip()) - 1
+        start = adjacency_matrix.index[start_index]
+
+        goal_index = int(input(">>> Enter goal location: ").strip()) - 1
+        goal = adjacency_matrix.index[goal_index]
+
         consider_accessibility = (
-            input("Consider wheelchair accessibility? (y/n): ").strip().lower() == "y"
+            input(">>> Consider wheelchair accessibility? (y/n): ").strip().lower()
+            == "y"
         )
 
+        # Run the path finder and display the outputs
         result = path_finder.find_path(
             start, goal, consider_accessibility=consider_accessibility
         )
