@@ -1,22 +1,50 @@
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, NamedTuple, Optional, Tuple, TypedDict
+from typing import Dict, List, Optional, Tuple, TypedDict
 
 import pandas as pd
 
 
-class SearchResult(NamedTuple):
+class SearchAction(Enum):
+    """Enum of available actions when running a pathfinding algorithm.
+    
+    Attributes:
+        EXPLORE (int): Indicates popping a node from the frontier to explore.
+        ADD_TO_FRONTIER (int): Indicates adding a node to the frontier.
+    """
+
+    EXPLORE = 0
+    ADD_TO_FRONTIER = 1
+
+
+@dataclass
+class SearchStep:
+    """Represents a step in the pathfinding algorithm.
+    
+    Attributes:
+        action (SearchAction): The action taken during this step.
+        node (str): The identifier of the node being processed.
+    """
+
+    action: SearchAction
+    node: str
+
+
+@dataclass
+class SearchResult:
     """Result of a path search operation.
 
     Attributes:
         path (List[str]): The list of nodes representing the path from the start to the goal.
         cost (float): The total cost associated with the found path.
         nodes_created_count (int): The number of nodes generated during the search.
+        steps (List[SearchStep]): The list of steps performed during the search.
     """
 
     path: List[str]
     cost: float
     nodes_created_count: int
+    steps: List[SearchStep] = field(default_factory=list)
 
 
 @dataclass(order=True)

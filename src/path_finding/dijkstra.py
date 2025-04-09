@@ -6,7 +6,8 @@ import heapq
 import logging
 from typing import Dict, List
 
-from .path_finder import Move, PathFinder, SearchResult
+from .custom_types import Move, SearchAction, SearchResult, SearchStep
+from .path_finder import PathFinder
 
 
 logger = logging.getLogger(__name__)
@@ -42,9 +43,15 @@ class Dijkstra(PathFinder):
         g_scores[start] = 0.0
         # Initialize frontier with the start node
         frontier: List[Move] = [Move(source=None, destination=start)]
+        # Record start node being added to frontier
+        self._steps.append(SearchStep(action=SearchAction.ADD_TO_FRONTIER, node=start))
+        
         while frontier:
             move = heapq.heappop(frontier)
             logger.debug(f"Exploring move from '{move.source}' to '{move.destination}'")
+            # Record node being explored
+            self._steps.append(SearchStep(action=SearchAction.EXPLORE, node=move.destination))
+            
             if move.destination in self._came_from:
                 logger.debug(f"Already visited '{move.destination}', skipping")
                 continue
@@ -56,6 +63,7 @@ class Dijkstra(PathFinder):
                     path=self._reconstruct_path(goal),
                     cost=g_scores[goal],
                     nodes_created_count=len(self._nodes_created),
+                    steps=self._steps,
                 )
 
             for new_move in self._expand(move.destination):
@@ -70,9 +78,16 @@ class Dijkstra(PathFinder):
                 g_scores[neighbor] = g_score
                 new_move.priority = g_score
                 heapq.heappush(frontier, new_move)
+                # Record node being added to frontier
+                self._steps.append(SearchStep(action=SearchAction.ADD_TO_FRONTIER, node=neighbor))
                 logger.debug(
                     f"Added move from '{new_move.source}' to '{new_move.destination}' to explore next. Priority: {new_move.priority}"
                 )
 
         logger.debug(f"No path found (explored {len(self._came_from)} nodes)")
-        return SearchResult([], float("inf"), len(self._nodes_created))
+        return SearchResult(
+            path=[], 
+            cost=float("inf"), 
+            nodes_created_count=len(self._nodes_created),
+            steps=self._steps,
+        )
