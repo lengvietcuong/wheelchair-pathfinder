@@ -90,17 +90,28 @@ class PathFinder(ABC):
         Returns:
             None
         """
+        # Set core map configurations
         self._base_adjacency_matrix = adjacency_matrix
         self._node_coordinates = node_coordinates
-        self._nodes = set(adjacency_matrix.index)
 
+        # Create a graph from the adjacency matrix for efficiency in some operations
+        self._graph: Dict[str, List[str]] = {}
+        for node in adjacency_matrix.index:
+            self._graph[node] = [
+                neighbor
+                for neighbor in adjacency_matrix.index
+                if node != neighbor
+                and not np.isinf(adjacency_matrix.loc[node, neighbor])
+            ]
+
+        # Set initial state
         self._came_from: Dict[str, Optional[str]] = {}
-        self._nodes_created_count: Set[str] = set()
+        self._nodes_created: Set[str] = set()
         self._move_index = 0
 
+        # Set accessibility configurations
         self._accessibility_adjacency_matrix: Optional[pd.DataFrame] = None
         self._accessibility_cost_multiplier: float = 1.0
-
         has_accessibility_features = (
             slope_matrix is not None
             and kerb_ramps_matrix is not None
@@ -108,7 +119,6 @@ class PathFinder(ABC):
         )
         if not has_accessibility_features:
             return
-        # Account for accessibility features
         self._accessibility_adjacency_matrix, self._accessibility_cost_multiplier = (
             calculate_accessibility_costs(
                 self._base_adjacency_matrix,
@@ -129,7 +139,7 @@ class PathFinder(ABC):
         Returns:
             bool: True if move is valid and neighbor has not been visited; False otherwise.
         """
-        nodes_exist = source in self._nodes and destination in self._nodes
+        nodes_exist = source in self._graph and destination in self._graph
         path_exists = source != destination and not np.isinf(
             self._base_adjacency_matrix.loc[source, destination]
         )
@@ -147,11 +157,11 @@ class PathFinder(ABC):
         Returns:
             List[Move]: List of possible moves from the node.
         """
+        self._nodes_created.add(node)
         moves: List[Move] = []
-        for neighbor in self._nodes:
+        for neighbor in self._graph[node]:
             if not self._is_valid_move(node, neighbor):
                 continue
-
             moves.append(
                 Move(
                     source=node,
@@ -160,7 +170,7 @@ class PathFinder(ABC):
                     index=self._move_index,
                 )
             )
-            self._nodes_created_count.add(neighbor)
+            self._nodes_created.add(neighbor)
             self._move_index += 1
 
         return moves
@@ -189,7 +199,7 @@ class PathFinder(ABC):
         Reset internal search state for a new pathfinding operation.
         """
         self._came_from = {}
-        self._nodes_created_count = set()
+        self._nodes_created = set()
         self._move_index = 0
 
     def _get_euclidean_distance(self, source: str, destination: str) -> float:

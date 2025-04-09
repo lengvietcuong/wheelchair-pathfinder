@@ -21,14 +21,14 @@ class AStar(PathFinder):
         goal: str,
         consider_accessibility: bool = True,
     ) -> SearchResult:
-        if start not in self._nodes or goal not in self._nodes:
+        if start not in self._graph or goal not in self._graph:
             raise ValueError("Start or goal location not found")
 
         self._reset_states()
         # Choose appropriate adjacency matrix and heuristic cost multiplier
         if consider_accessibility:
             logger.debug(
-                f"Accessibility considered. Using adjusted adjacency matrix and cost multiplier ({self._accessibility_cost_multiplier})"
+                f"Accessibility considered. Using adjusted adjacency matrix and cost multiplier ({self._accessibility_cost_multiplier}x)"
             )
             adjacency_matrix = self._accessibility_adjacency_matrix
             heuristic_cost_multiplier = self._accessibility_cost_multiplier
@@ -40,7 +40,7 @@ class AStar(PathFinder):
             heuristic_cost_multiplier = 1.0
 
         # Track known costs
-        g_scores: Dict[str, float] = {node: float("inf") for node in self._nodes}
+        g_scores: Dict[str, float] = {node: float("inf") for node in self._graph}
         g_scores[start] = 0.0
         # Initialize frontier with the start node
         frontier: List[Move] = [Move(source=None, destination=start)]
@@ -57,7 +57,7 @@ class AStar(PathFinder):
                 return SearchResult(
                     path=self._reconstruct_path(goal),
                     cost=g_scores[goal],
-                    nodes_created_count=len(self._nodes_created_count),
+                    nodes_created_count=len(self._nodes_created),
                 )
 
             for new_move in self._expand(move.destination):
@@ -83,4 +83,4 @@ class AStar(PathFinder):
                 )
 
         logger.debug(f"No path found (explored {len(self._came_from)} nodes)")
-        return SearchResult([], float("inf"), len(self._nodes_created_count))
+        return SearchResult([], float("inf"), len(self._nodes_created))

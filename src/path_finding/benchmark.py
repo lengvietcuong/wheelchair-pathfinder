@@ -7,20 +7,24 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 
 from .a_star import AStar
+from .bfs import BFS
 from .custom_types import (
     Algorithm,
     BenchmarkResult,
     TestCase,
 )
+from .dfs import DFS
 from .path_finder import PathFinder
-
-
-logger = logging.getLogger(__name__)
 
 
 PATH_FINDERS: Dict[Algorithm, PathFinder] = {
     Algorithm.A_STAR: AStar,
+    Algorithm.DFS: DFS,
+    Algorithm.BFS: BFS,
 }
+
+
+logger = logging.getLogger(__name__)
 
 
 def run_benchmark(

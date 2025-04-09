@@ -40,6 +40,8 @@ class Algorithm(Enum):
     """Enum of available pathfinding algorithms."""
 
     A_STAR = "A*"
+    DFS = "Depth-First Search (DFS)"
+    BFS = "Breadth-First Search (BFS)"
 
 
 @dataclass

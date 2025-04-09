@@ -1,6 +1,6 @@
 import json
 import logging
-from pathlib import Path
+from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -19,9 +19,17 @@ from map_creation.map_to_matrix import (
 )
 from path_finding.a_star import AStar
 from path_finding.benchmark import run_full_benchmark
+from path_finding.bfs import BFS
+from path_finding.custom_types import Algorithm
+from path_finding.dfs import DFS
+from path_finding.path_finder import PathFinder
 
 
-DATA_FOLDER = Path("data")
+PATH_FINDERS: Dict[Algorithm, PathFinder] = {
+    Algorithm.A_STAR: AStar,
+    Algorithm.DFS: DFS,
+    Algorithm.BFS: BFS,
+}
 TEST_CASE_COUNT = 20
 RUNS_PER_TEST_CASE = 10
 
@@ -61,19 +69,15 @@ def initialize_map():
         generate_accessibility_features()
 
     # Load the adjacency matrix and node coordinates
-    adjacency_matrix = pd.read_csv(DATA_FOLDER / "adjacency_matrix.csv", index_col=0)
+    adjacency_matrix = pd.read_csv(ADJACENCY_MATRIX_PATH, index_col=0)
     adjacency_matrix = adjacency_matrix.replace("inf", np.inf)
-    with open(DATA_FOLDER / "node_coordinates.json", "r") as file:
+    with open(NODES_COORDINATES_PATH) as file:
         node_coordinates = json.load(file)
 
     # Load the accessibility feature matrices
-    slope_matrix = pd.read_csv(DATA_FOLDER / "adjacency_matrix_slope.csv", index_col=0)
-    kerb_ramps_matrix = pd.read_csv(
-        DATA_FOLDER / "adjacency_matrix_kerb_ramps.csv", index_col=0
-    )
-    sidewalk_width_matrix = pd.read_csv(
-        DATA_FOLDER / "adjacency_matrix_sidewalk_width.csv", index_col=0
-    )
+    slope_matrix = pd.read_csv(SLOPES_PATH, index_col=0)
+    kerb_ramps_matrix = pd.read_csv(KERB_RAMPS_PATH, index_col=0)
+    sidewalk_width_matrix = pd.read_csv(SIDEWALK_WIDTH_PATH, index_col=0)
 
     return {
         "adjacency_matrix": adjacency_matrix,
@@ -87,14 +91,14 @@ def initialize_map():
 def main():
     def handle_run_path_finder():
         """Take user input for start and goal locations, run the path finder, and display the outputs."""
-        start = input('Enter start location (e.g. "Noi Due Cafe"): ').strip()
-        goal = input(
-            'Enter goal location (e.g. "Robert Lehman Collection Library"): '
-        ).strip()
-        consider_accessibility = (
-            input("Consider wheelchair accessibility? (y/n): ").strip().lower() == "yes"
-        )
-        pathfinder = AStar(
+
+        print("Available algorithms:")
+        for index, algorithm in enumerate(PATH_FINDERS, start=1):
+            print(f"{index}: {algorithm.value}")
+
+        algorithm_index = int(input("\n>>> Your choice: ").strip()) - 1
+        path_finders = list(PATH_FINDERS.values())
+        path_finder = path_finders[algorithm_index](
             adjacency_matrix=adjacency_matrix,
             node_coordinates=node_coordinates,
             slope_matrix=slope_matrix,
@@ -102,15 +106,24 @@ def main():
             sidewalk_width_matrix=sidewalk_width_matrix,
         )
 
-        result = pathfinder.find_path(
+        start = input("Enter start location (e.g. Noi Due Cafe): ").strip()
+        goal = input(
+            "Enter goal location (e.g. Robert Lehman Collection Library): "
+        ).strip()
+        consider_accessibility = (
+            input("Consider wheelchair accessibility? (y/n): ").strip().lower() == "y"
+        )
+
+        result = path_finder.find_path(
             start, goal, consider_accessibility=consider_accessibility
         )
-        print(f"Path: {result.path}")
+        print(f"\nPath: {" → ".join(result.path)}")
         print(f"Cost: {result.cost:.2f}")
         print(f"Number of nodes created: {result.nodes_created_count}")
 
     def handle_run_benchmarks():
         """Run the benchmarks for the path finder and display the average results."""
+
         _, average_results = run_full_benchmark(
             adjacency_matrix=adjacency_matrix,
             node_coordinates=node_coordinates,
@@ -138,7 +151,7 @@ def main():
     print("Please choose an option:")
     print(" 1. Run path finder")
     print(" 2. Run benchmarks")
-    choice = input("> Your choice: ").strip()
+    choice = input("\n>>> Your choice: ").strip()
     print("==" * 40)
     if choice == "1":
         handle_run_path_finder()
