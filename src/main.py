@@ -23,6 +23,7 @@ from path_finding.bfs import BFS
 from path_finding.custom_types import Algorithm
 from path_finding.dfs import DFS
 from path_finding.dijkstra import Dijkstra
+from path_finding.greedy import Greedy
 from path_finding.path_finder import PathFinder
 
 
@@ -31,6 +32,7 @@ PATH_FINDERS: Dict[Algorithm, PathFinder] = {
     Algorithm.DFS: DFS,
     Algorithm.BFS: BFS,
     Algorithm.DIJKSTRA: Dijkstra,
+    Algorithm.GREEDY: Greedy,
 }
 TEST_CASE_COUNT = 20
 RUNS_PER_TEST_CASE = 5

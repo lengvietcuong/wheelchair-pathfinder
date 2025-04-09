@@ -16,14 +16,16 @@ from .custom_types import (
 )
 from .dfs import DFS
 from .dijkstra import Dijkstra
+from .greedy import Greedy
 from .path_finder import PathFinder
 
 
 PATH_FINDERS: Dict[Algorithm, PathFinder] = {
     Algorithm.A_STAR: AStar,
-    Algorithm.DFS: DFS,
     Algorithm.BFS: BFS,
+    Algorithm.DFS: DFS,
     Algorithm.DIJKSTRA: Dijkstra,
+    Algorithm.GREEDY: Greedy,
 }
 
 
