@@ -42,6 +42,7 @@ class Algorithm(Enum):
     A_STAR = "A*"
     DFS = "Depth-First Search (DFS)"
     BFS = "Breadth-First Search (BFS)"
+    DIJKSTRA = "Dijkstra"
 
 
 @dataclass

@@ -14,6 +14,7 @@ from .custom_types import (
     TestCase,
 )
 from .dfs import DFS
+from .dijkstra import Dijkstra
 from .path_finder import PathFinder
 
 
@@ -21,6 +22,7 @@ PATH_FINDERS: Dict[Algorithm, PathFinder] = {
     Algorithm.A_STAR: AStar,
     Algorithm.DFS: DFS,
     Algorithm.BFS: BFS,
+    Algorithm.DIJKSTRA: Dijkstra,
 }
 
 
