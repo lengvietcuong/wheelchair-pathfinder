@@ -15,6 +15,20 @@ import pandas as pd
 from geopy.distance import geodesic
 
 
+TEMP_DIRECTORY = Path("temp_kmz")
+MAP_DIRECTORY = Path("map")
+
+KMZ_MAP_PATH = MAP_DIRECTORY / "map.kmz"
+ADJACENCY_MATRIX_PATH = MAP_DIRECTORY / "adjacency_matrix.csv"
+NODES_COORDINATES_PATH = MAP_DIRECTORY / "node_coordinates.json"
+
+KML_BASENAME = "doc.kml"
+KML_NAMESPACE = {"kml": "http://www.opengis.net/kml/2.2"}
+
+
+logger = logging.getLogger(__name__)
+
+
 class Coordinates(NamedTuple):
     """Represents a geographical coordinate with latitude and longitude."""
 
@@ -35,20 +49,6 @@ class Edge(TypedDict):
     start_node_id: int
     end_node_id: int
     distance: float
-
-
-TEMP_DIRECTORY = Path("temp_kmz")
-DATA_DIRECTORY = Path("data")
-
-KMZ_MAP_PATH = DATA_DIRECTORY / "map.kmz"
-ADJACENCY_MATRIX_PATH = DATA_DIRECTORY / "adjacency_matrix.csv"
-NODES_COORDINATES_PATH = DATA_DIRECTORY / "node_coordinates.json"
-
-KML_BASENAME = "doc.kml"
-KML_NAMESPACE = {"kml": "http://www.opengis.net/kml/2.2"}
-
-
-logger = logging.getLogger(__name__)
 
 
 def extract_kmz_to_kml(kmz_path: Path, output_directory: Path = TEMP_DIRECTORY) -> Path:

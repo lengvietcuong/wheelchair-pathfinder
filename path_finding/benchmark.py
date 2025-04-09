@@ -1,3 +1,7 @@
+"""
+Benchmarking Module for Pathfinding Algorithms.
+"""
+
 import concurrent.futures
 import itertools
 import logging

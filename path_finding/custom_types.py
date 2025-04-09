@@ -1,3 +1,7 @@
+"""
+Custom Types for Pathfinding Algorithms.
+"""
+
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, TypedDict
 

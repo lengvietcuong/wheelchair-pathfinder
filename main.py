@@ -1,3 +1,7 @@
+"""
+Main Entry Point for the Wheelchair Path Finder Application.
+"""
+
 import json
 import logging
 import math

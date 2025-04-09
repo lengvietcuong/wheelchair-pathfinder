@@ -13,11 +13,11 @@ import pandas as pd
 from .map_to_matrix import ADJACENCY_MATRIX_PATH
 
 
-DATA_DIRECTORY = Path("data")
-SLOPES_PATH = DATA_DIRECTORY / "adjacency_matrix_slope.csv"
-KERB_RAMPS_PATH = DATA_DIRECTORY / "adjacency_matrix_kerb_ramps.csv"
-SIDEWALK_WIDTH_PATH = DATA_DIRECTORY / "adjacency_matrix_sidewalk_width.csv"
-NODE_FEATURES_PATH = DATA_DIRECTORY / "adjacency_matrix_node_features.csv"
+MAP_DIRECTORY = Path("map")
+SLOPES_PATH = MAP_DIRECTORY / "adjacency_matrix_slope.csv"
+KERB_RAMPS_PATH = MAP_DIRECTORY / "adjacency_matrix_kerb_ramps.csv"
+SIDEWALK_WIDTH_PATH = MAP_DIRECTORY / "adjacency_matrix_sidewalk_width.csv"
+NODE_FEATURES_PATH = MAP_DIRECTORY / "adjacency_matrix_node_features.csv"
 
 
 logger = logging.getLogger(__name__)
