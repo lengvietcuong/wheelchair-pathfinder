@@ -8,45 +8,26 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 
 from .a_star import AStar
-from .bfs import BFS
 from .custom_types import (
-    Algorithm,
     BenchmarkResult,
     TestCase,
 )
-from .dfs import DFS
-from .dijkstra import Dijkstra
-from .greedy import Greedy
-from .path_finder import PathFinder
-
-
-PATH_FINDERS: Dict[Algorithm, PathFinder] = {
-    Algorithm.A_STAR: AStar,
-    Algorithm.BFS: BFS,
-    Algorithm.DFS: DFS,
-    Algorithm.DIJKSTRA: Dijkstra,
-    Algorithm.GREEDY: Greedy,
-}
 
 
 logger = logging.getLogger(__name__)
 
 
-def run_benchmark(
-    algorithm: Algorithm,
-    test_case: TestCase,
-) -> BenchmarkResult:
+def run_benchmark(test_case: TestCase) -> BenchmarkResult:
     """
     Run a benchmark for the given pathfinder and test case.
 
     Args:
-        algorithm (Algorithm): Pathfinding algorithm to use.
         test_case (TestCase): Test case configurations.
 
     Returns:
         BenchmarkResult: The result of running the benchmark.
     """
-    pathfinder: PathFinder = PATH_FINDERS[algorithm](
+    path_finder = AStar(
         adjacency_matrix=test_case.adjacency_matrix,
         node_coordinates=test_case.node_coordinates,
         slope_matrix=test_case.slope_matrix,
@@ -55,13 +36,13 @@ def run_benchmark(
     )
 
     start_time = time.perf_counter()
-    search_result = pathfinder.find_path(
+    search_result = path_finder.find_path(
         test_case.start, test_case.goal, test_case.consider_accessibility
     )
     execution_time_ms = (time.perf_counter() - start_time) * 1_000
 
     return BenchmarkResult(
-        algorithm=algorithm.value,
+        algorithm="A*",
         consider_accessibility=test_case.consider_accessibility,
         start=test_case.start,
         goal=test_case.goal,
@@ -73,14 +54,11 @@ def run_benchmark(
     )
 
 
-def run_benchmark_multiple_times(
-    algorithm: Algorithm, test_case: TestCase, count: int
-) -> BenchmarkResult:
+def run_benchmark_multiple_times(test_case: TestCase, count: int) -> BenchmarkResult:
     """
     Run a benchmark multiple times and return the averaged result.
 
     Args:
-        algorithm (Algorithm): Pathfinding algorithm to use.
         test_case (TestCase): Test case configurations.
         count (int): Number of runs to average execution time over.
 
@@ -90,7 +68,7 @@ def run_benchmark_multiple_times(
     execution_times = []
     result = None
     for _ in range(count):
-        result = run_benchmark(algorithm, test_case)
+        result = run_benchmark(test_case)
         execution_times.append(result["execution_time_ms"])
 
     # Update the execution time with the average
@@ -159,11 +137,9 @@ def run_full_benchmark(
         future_to_task = {
             executor.submit(
                 run_benchmark_multiple_times,
-                algorithm,
                 test_case,
                 runs_per_test_case,
-            ): (algorithm, test_case)
-            for algorithm in Algorithm
+            ): test_case
             for test_case in test_cases
         }
 

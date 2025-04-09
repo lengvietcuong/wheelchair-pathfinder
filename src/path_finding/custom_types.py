@@ -1,33 +1,7 @@
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Dict, List, Optional, Tuple, TypedDict
 
 import pandas as pd
-
-
-class SearchAction(Enum):
-    """Enum of available actions when running a pathfinding algorithm.
-    
-    Attributes:
-        EXPLORE (int): Indicates popping a node from the frontier to explore.
-        ADD_TO_FRONTIER (int): Indicates adding a node to the frontier.
-    """
-
-    EXPLORE = 0
-    ADD_TO_FRONTIER = 1
-
-
-@dataclass
-class SearchStep:
-    """Represents a step in the pathfinding algorithm.
-    
-    Attributes:
-        action (SearchAction): The action taken during this step.
-        node (str): The identifier of the node being processed.
-    """
-
-    action: SearchAction
-    node: str
 
 
 @dataclass
@@ -44,7 +18,6 @@ class SearchResult:
     path: List[str]
     cost: float
     nodes_created_count: int
-    steps: List[SearchStep] = field(default_factory=list)
 
 
 @dataclass(order=True)
@@ -62,16 +35,6 @@ class Move:
     destination: str = field(compare=False)
     priority: float = field(default=0.0)
     index: int = field(compare=False, default=0)
-
-
-class Algorithm(Enum):
-    """Enum of available pathfinding algorithms."""
-
-    A_STAR = "A*"
-    BFS = "Breadth-First Search (BFS)"
-    DFS = "Depth-First Search (DFS)"
-    DIJKSTRA = "Dijkstra"
-    GREEDY = "Greedy Best-First Search"
 
 
 @dataclass

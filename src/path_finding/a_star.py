@@ -6,7 +6,7 @@ import heapq
 import logging
 from typing import Dict, List
 
-from .custom_types import Move, SearchAction, SearchResult, SearchStep
+from .custom_types import Move, SearchResult
 from .path_finder import PathFinder
 
 
@@ -43,41 +43,40 @@ class AStar(PathFinder):
         # Track known costs
         g_scores: Dict[str, float] = {node: float("inf") for node in self._graph}
         g_scores[start] = 0.0
-        # Initialize frontier with the start node
+        # Initialize frontier with a dummy move to the start node
         frontier: List[Move] = [Move(source=None, destination=start)]
-        # Record start node being added to frontier
-        self._steps.append(SearchStep(action=SearchAction.ADD_TO_FRONTIER, node=start))
-        
         while frontier:
             move = heapq.heappop(frontier)
             logger.debug(f"Exploring move from '{move.source}' to '{move.destination}'")
-            # Record node being explored
-            self._steps.append(SearchStep(action=SearchAction.EXPLORE, node=move.destination))
-            
+
+            # Skip if node is already visited
             if move.destination in self._came_from:
                 logger.debug(f"Already visited '{move.destination}', skipping")
                 continue
 
+            # Record where we came from
             self._came_from[move.destination] = move.source
-            if move.destination == goal:
+
+            if move.destination == goal:  # At goal node
                 logger.debug("Found goal node. Returing result")
                 return SearchResult(
                     path=self._reconstruct_path(goal),
                     cost=g_scores[goal],
                     nodes_created_count=len(self._nodes_created),
-                    steps=self._steps,
                 )
 
+            # Add neighbors to frontier
             for new_move in self._expand(move.destination):
                 neighbor = new_move.destination
+                # Calculate the known cost to reach this neighbor (if going through the current node)
                 g_score = (
                     g_scores[move.destination]
                     + adjacency_matrix.loc[move.destination, neighbor]
                 )
-                if g_score >= g_scores[neighbor]:
+                if g_score >= g_scores[neighbor]:  # Already found a better path
                     continue
 
-                g_scores[neighbor] = g_score
+                g_scores[neighbor] = g_score  # Record new best cost
                 # Calculate the priority score as known_cost + estimated_cost
                 f_score = (
                     g_score
@@ -86,16 +85,11 @@ class AStar(PathFinder):
                 )
                 new_move.priority = f_score
                 heapq.heappush(frontier, new_move)
-                # Record node being added to frontier
-                self._steps.append(SearchStep(action=SearchAction.ADD_TO_FRONTIER, node=neighbor))
                 logger.debug(
                     f"Added move from '{new_move.source}' to '{new_move.destination}' to explore next. Priority: {new_move.priority}"
                 )
 
         logger.debug(f"No path found (explored {len(self._came_from)} nodes)")
         return SearchResult(
-            path=[], 
-            cost=float("inf"), 
-            nodes_created_count=len(self._nodes_created),
-            steps=self._steps,
+            path=[], cost=float("inf"), nodes_created_count=len(self._nodes_created)
         )

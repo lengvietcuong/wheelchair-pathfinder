@@ -1,6 +1,5 @@
 import json
 import logging
-from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -19,21 +18,8 @@ from map_creation.map_to_matrix import (
 )
 from path_finding.a_star import AStar
 from path_finding.benchmark import run_full_benchmark
-from path_finding.bfs import BFS
-from path_finding.custom_types import Algorithm
-from path_finding.dfs import DFS
-from path_finding.dijkstra import Dijkstra
-from path_finding.greedy import Greedy
-from path_finding.path_finder import PathFinder
 
 
-PATH_FINDERS: Dict[Algorithm, PathFinder] = {
-    Algorithm.A_STAR: AStar,
-    Algorithm.DFS: DFS,
-    Algorithm.BFS: BFS,
-    Algorithm.DIJKSTRA: Dijkstra,
-    Algorithm.GREEDY: Greedy,
-}
 TEST_CASE_COUNT = 20
 RUNS_PER_TEST_CASE = 5
 
@@ -95,22 +81,6 @@ def initialize_map():
 def main():
     def handle_run_path_finder():
         """Take user input for start and goal locations, run the path finder, and display the outputs."""
-
-        # Select algorithm
-        print("Available algorithms:")
-        for index, algorithm in enumerate(PATH_FINDERS, start=1):
-            print(f"{index}. {algorithm.value}")
-
-        algorithm_index = int(input("\n>>> Your choice: ").strip()) - 1
-        path_finders = list(PATH_FINDERS.values())
-        path_finder = path_finders[algorithm_index](
-            adjacency_matrix=adjacency_matrix,
-            node_coordinates=node_coordinates,
-            slope_matrix=slope_matrix,
-            kerb_ramps_matrix=kerb_ramps_matrix,
-            sidewalk_width_matrix=sidewalk_width_matrix,
-        )
-
         # Select start and goal locations
         print("\nAvailable locations:")
         for index, location in enumerate(adjacency_matrix.index, start=1):
@@ -128,6 +98,13 @@ def main():
         )
 
         # Run the path finder and display the outputs
+        path_finder = AStar(
+            adjacency_matrix=adjacency_matrix,
+            node_coordinates=node_coordinates,
+            slope_matrix=slope_matrix,
+            kerb_ramps_matrix=kerb_ramps_matrix,
+            sidewalk_width_matrix=sidewalk_width_matrix,
+        )
         result = path_finder.find_path(
             start, goal, consider_accessibility=consider_accessibility
         )

@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Set, Tuple
 import numpy as np
 import pandas as pd
 
-from .custom_types import Move, SearchResult, SearchStep
+from .custom_types import Move, SearchResult
 
 
 def calculate_accessibility_costs(
@@ -108,7 +108,6 @@ class PathFinder(ABC):
         self._came_from: Dict[str, Optional[str]] = {}
         self._nodes_created: Set[str] = set()
         self._move_index = 0
-        self._steps: List[SearchStep] = []
 
         # Set accessibility configurations
         self._accessibility_adjacency_matrix: Optional[pd.DataFrame] = None
@@ -202,7 +201,6 @@ class PathFinder(ABC):
         self._came_from = {}
         self._nodes_created = set()
         self._move_index = 0
-        self._steps = []
 
     def _get_euclidean_distance(self, source: str, destination: str) -> float:
         """
