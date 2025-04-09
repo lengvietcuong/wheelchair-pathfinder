@@ -75,7 +75,7 @@ def main():
         print(f"Estimated time: {Fore.CYAN}{hours_text}{minutes_text}{Style.RESET_ALL}")
 
         print(f"\n{Fore.LIGHTBLACK_EX}Technical details:")
-        print(f"  - Cost: {result.cost:,.2f}")
+        print(f"  - Accessibility cost: {result.accessibility_cost:,.2f}")
         print(f"  - Number of nodes created: {result.nodes_created_count}")
         print(
             f"  - Number of nodes explored: {result.nodes_explored_count}{Style.RESET_ALL}"
