@@ -33,10 +33,10 @@ PATH_FINDERS: Dict[Algorithm, PathFinder] = {
     Algorithm.DIJKSTRA: Dijkstra,
 }
 TEST_CASE_COUNT = 20
-RUNS_PER_TEST_CASE = 10
+RUNS_PER_TEST_CASE = 5
 
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(name)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -146,7 +146,7 @@ def main():
             runs_per_test_case=RUNS_PER_TEST_CASE,
         )
         print(
-            f"Average results of {TEST_CASE_COUNT} test cases ({RUNS_PER_TEST_CASE} runs each):"
+            f"Average results ({TEST_CASE_COUNT} test cases, {RUNS_PER_TEST_CASE} runs each):"
         )
         print(average_results)
 
