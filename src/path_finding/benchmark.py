@@ -48,7 +48,7 @@ def run_benchmark(test_case: TestCase) -> BenchmarkResult:
         goal=test_case.goal,
         path=search_result.path,
         distance=search_result.distance,
-        cost=search_result.cost,
+        accessibility_cost=search_result.accessibility_cost,
         nodes_created_count=search_result.nodes_created_count,
         nodes_explored_count=search_result.nodes_explored_count,
         execution_time_ms=execution_time_ms,
@@ -156,13 +156,13 @@ def run_full_benchmark(
     logger.debug("Benchmarking completed. Compiling results...")
     detailed_results = pd.DataFrame(results)
     # When calculating the average, ignore unreachable paths
-    valid_paths = detailed_results[detailed_results["cost"] != float("inf")]
+    valid_paths = detailed_results[detailed_results["distance"] != float("inf")]
     average_results = (
         valid_paths.groupby(["algorithm", "consider_accessibility"])
         .agg(
             {
                 "distance": "mean",
-                "cost": "mean",
+                "accessibility_cost": "mean",
                 "nodes_created_count": "mean",
                 "nodes_explored_count": "mean",
                 "execution_time_ms": "mean",
@@ -170,6 +170,17 @@ def run_full_benchmark(
         )
         .round(2)
         .reset_index()
+        .rename(
+            columns={
+                "algorithm": "Alg",
+                "consider_accessibility": "Accessibility",
+                "distance": "Dist (m)",
+                "accessibility_cost": "Wheelchair cost",
+                "nodes_created_count": "Nodes created",
+                "nodes_explored_count": "Nodes explored",
+                "execution_time_ms": "Time (ms)",
+            }
+        )
     )
 
     return detailed_results, average_results

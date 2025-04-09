@@ -11,14 +11,14 @@ class SearchResult:
     Attributes:
         path (List[str]): The list of nodes representing the path from the start to the goal.
         distance (float): The total real-world distance of the path.
-        cost (float): The total cost of the path used in the algorithm.
+        accessibility_cost (float): The total cost (with accessibility considered) of the path.
         nodes_created_count (int): The number of nodes generated during the search.
         nodes_explored_count (int): The number of nodes explored during the search.
     """
 
     path: List[str]
     distance: float
-    cost: float
+    accessibility_cost: float
     nodes_created_count: int
     nodes_explored_count: int
 
@@ -77,7 +77,7 @@ class BenchmarkResult(TypedDict):
         goal (str): The goal node identifier.
         path (List[str]): The list of nodes representing the found path.
         distance (float): The total real-world distance of the path.
-        cost (float): The total cost of the path used in the algorithm.
+        accessibility_cost (float): The total cost (with accessibility considered) of the path.
         nodes_created_count (int): The number of nodes created during the search.
         nodes_explored_count (int): The number of nodes explored during the search.
         execution_time_ms (float): The time taken to execute the pathfinding algorithm in milliseconds.
@@ -89,7 +89,7 @@ class BenchmarkResult(TypedDict):
     goal: str
     path: List[str]
     distance: float
-    cost: float
+    accessibility_cost: float
     nodes_created_count: int
     nodes_explored_count: int
     execution_time_ms: float

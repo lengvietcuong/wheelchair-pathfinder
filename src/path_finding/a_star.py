@@ -65,10 +65,14 @@ class AStar(PathFinder):
                     self._base_adjacency_matrix.loc[path[i], path[i + 1]]
                     for i in range(len(path) - 1)
                 )
+                accessibility_cost = sum(
+                    self._accessibility_adjacency_matrix.loc[path[i], path[i + 1]]
+                    for i in range(len(path) - 1)
+                )
                 return SearchResult(
                     path=self._reconstruct_path(goal),
                     distance=distance,
-                    cost=g_scores[goal],
+                    accessibility_cost=accessibility_cost,
                     nodes_created_count=len(self._nodes_created),
                     nodes_explored_count=len(self._came_from),
                 )
@@ -101,7 +105,7 @@ class AStar(PathFinder):
         return SearchResult(
             path=[],
             distance=float("inf"),
-            cost=float("inf"),
+            accessibility_cost=float("inf"),
             nodes_created_count=len(self._nodes_created),
             nodes_explored_count=len(self._came_from),
         )
