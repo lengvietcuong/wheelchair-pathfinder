@@ -156,7 +156,7 @@ def run_full_benchmark(
     logger.debug("Benchmarking completed. Compiling results...")
     detailed_results = pd.DataFrame(results)
     # When calculating the average, ignore unreachable paths
-    valid_paths = detailed_results[detailed_results["path_cost"] != float("inf")]
+    valid_paths = detailed_results[detailed_results["cost"] != float("inf")]
     average_results = (
         valid_paths.groupby(["algorithm", "consider_accessibility"])
         .agg(
