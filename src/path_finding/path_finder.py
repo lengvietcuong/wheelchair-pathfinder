@@ -3,6 +3,7 @@ Base Class for Pathfinding Algorithms.
 """
 
 from abc import ABC, abstractmethod
+from math import sqrt
 from typing import Dict, List, Optional, Set, Tuple
 
 import numpy as np
@@ -190,6 +191,23 @@ class PathFinder(ABC):
         self._came_from = {}
         self._nodes_created_count = set()
         self._move_index = 0
+
+    def _get_euclidean_distance(self, source: str, destination: str) -> float:
+        """
+        Estimate cost from source to destination using Euclidean distance.
+
+        This is an admissible heuristic that never overestimates the distance to the goal, making it suitable for finding optimal paths with A*.
+
+        Args:
+            source (str): Identifier of the source node.
+            destination (str): Identifier of the destination node.
+
+        Returns:
+            float: Euclidean distance between the two nodes.
+        """
+        x1, y1 = self._node_coordinates[source]
+        x2, y2 = self._node_coordinates[destination]
+        return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2) * 100
 
     @abstractmethod
     def find_path(
