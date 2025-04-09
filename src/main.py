@@ -136,14 +136,20 @@ def main():
         kerb_ramps_matrix,
         sidewalk_width_matrix,
     ) = initialize_map().values()
-
-    print("==" * 40)
+    print(
+        """
+____       _   _       _____ _           _           
+|  _ \\ __ _| |_| |__   |  ___(_)_ __   __| | ___ _ __ 
+| |_) / _` | __| '_ \\  | |_  | | '_ \\ / _` |/ _ \\ '__|
+|  __/ (_| | |_| | | | |  _| | | | | | (_| |  __/ |   
+|_|   \\__,_|\\__|_| |_| |_|   |_|_| |_|\\__,_|\\___|_|   
+    """
+    )
     print("Welcome to Wheelchair Path Finder!")
-    print("Please choose an option:")
+    print("What would you like to do?")
     print(" 1. Run path finder")
     print(" 2. Run benchmarks")
     choice = input("\n>>> Your choice: ").strip()
-    print("==" * 40)
     if choice == "1":
         handle_run_path_finder()
     elif choice == "2":
