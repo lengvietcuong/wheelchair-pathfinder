@@ -7,6 +7,7 @@ import math
 import os
 
 from colorama import Fore, Style
+from tabulate import tabulate
 
 from map_creation.initialize_map import initialize_map
 from path_finding.a_star import AStar
@@ -27,11 +28,36 @@ logger = logging.getLogger(__name__)
 def main():
     def handle_run_path_finder():
         """Take user input for start and goal locations, run the path finder, and display the outputs."""
-        # Select start and goal locations
-        print("\nAvailable locations:")
+        # Show the user all available locations
+        headers = [
+            f"{Fore.CYAN}{column}{Style.RESET_ALL}"
+            for column in ("ID", "Location", "Accessibility features")
+        ]
+        locations_table = []
         for index, location in enumerate(adjacency_matrix.index, start=1):
-            print(f"{Fore.MAGENTA}{index}.{Style.RESET_ALL} {location}")
+            features = []
+            if node_features.loc[location, "has_accessible_restroom"]:
+                features.append("restroom")
+            if node_features.loc[location, "has_accessible_parking"]:
+                features.append("parking")
+            if node_features.loc[location, "has_accessible_entrance"]:
+                features.append("entrance")
+            if node_features.loc[location, "has_rest_area"]:
+                features.append("rest area")
+            locations_table.append(
+                [
+                    f"{Fore.MAGENTA}{index}{Style.RESET_ALL}",
+                    location,
+                    ", ".join(features),
+                ]
+            )
+        print(
+            tabulate(
+                locations_table, headers=headers, tablefmt="plain", numalign="left"
+            )
+        )
 
+        # Get user input for start and goal locations
         start_input_text = (
             f"\n{Fore.CYAN}>>>{Style.RESET_ALL} Enter start location ID: "
         )
@@ -42,6 +68,7 @@ def main():
         goal_index = int(input(goal_input_text).strip()) - 1
         goal = adjacency_matrix.index[goal_index]
 
+        # Ask if the user wants to consider wheelchair accessibility
         accessibility_input_text = f"{Fore.CYAN}>>>{Style.RESET_ALL} Consider wheelchair accessibility? (y/n): "
         consider_accessibility = input(accessibility_input_text).strip().lower() == "y"
 
@@ -57,7 +84,7 @@ def main():
             start, goal, consider_accessibility=consider_accessibility
         )
 
-        # Calculate the estimated time
+        # Calculate the estimated time based on the distance
         seconds = result.distance / WHEELCHAIR_SPEED_M_PER_S
         hours = math.floor(seconds / (60 * 60))
         minutes = round((seconds % (60 * 60)) / 60)
@@ -82,9 +109,9 @@ def main():
         )
         print(f"{Fore.BLACK}{'=' * terminal_width}{Style.RESET_ALL}")
 
-    def handle_run_benchmarks():
-        """Run the benchmarks for the path finder and display the average results."""
-
+    def handle_run_benchmark():
+        """Run the benchmark for the path finder and display the average results."""
+        # Run the benchmark
         _, average_results = run_full_benchmark(
             adjacency_matrix=adjacency_matrix,
             node_coordinates=node_coordinates,
@@ -94,12 +121,16 @@ def main():
             test_case_count=TEST_CASE_COUNT,
             runs_per_test_case=RUNS_PER_TEST_CASE,
         )
-        average_results_table = average_results.to_string(index=False, justify="center")
+        # Format and print the average results table
+        headers = [
+            f"{Fore.CYAN}{column}{Style.RESET_ALL}"
+            for column in average_results.columns
+        ]
         print(
             f"\nAverage results ({TEST_CASE_COUNT} test cases, {RUNS_PER_TEST_CASE} runs each):"
         )
         print(f"{Fore.BLACK}{'=' * terminal_width}{Style.RESET_ALL}")
-        print(average_results_table)
+        print(tabulate(average_results.values, headers=headers, tablefmt="plain"))
         print(f"{Fore.BLACK}{'=' * terminal_width}{Style.RESET_ALL}")
 
     # Set up the map
@@ -109,9 +140,11 @@ def main():
         slope_matrix,
         kerb_ramps_matrix,
         sidewalk_width_matrix,
+        node_features,
     ) = initialize_map().values()
     terminal_width = os.get_terminal_size().columns
 
+    # Display greeting message and action menu
     print(
         Fore.CYAN
         + """
@@ -126,13 +159,13 @@ ____       _   _       _____ _           _
     while True:
         print("\nWhat would you like to do?")
         print(f" {Fore.MAGENTA}1.{Style.RESET_ALL} Run path finder")
-        print(f" {Fore.MAGENTA}2.{Style.RESET_ALL} Run benchmarks")
+        print(f" {Fore.MAGENTA}2.{Style.RESET_ALL} Run benchmark")
         print(f" {Fore.MAGENTA}3.{Style.RESET_ALL} Exit")
         choice = input(f"\n{Fore.CYAN}>>>{Style.RESET_ALL} Your choice: ").strip()
         if choice == "1":
             handle_run_path_finder()
         elif choice == "2":
-            handle_run_benchmarks()
+            handle_run_benchmark()
         else:
             print(f"{Fore.MAGENTA}Thank you. Goodbye!{Style.RESET_ALL}")
             break

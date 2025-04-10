@@ -31,6 +31,7 @@ def initialize_map():
             - slope_matrix: The slope matrix of the map.
             - kerb_ramps_matrix: The kerb ramps matrix of the map.
             - sidewalk_width_matrix: The sidewalk width matrix of the map.
+            - node_features: The node features matrix of the map.
     """
 
     # Create adjacency matrix and node coordinates files if needed
@@ -61,6 +62,7 @@ def initialize_map():
     slope_matrix = pd.read_csv(SLOPES_PATH, index_col=0)
     kerb_ramps_matrix = pd.read_csv(KERB_RAMPS_PATH, index_col=0)
     sidewalk_width_matrix = pd.read_csv(SIDEWALK_WIDTH_PATH, index_col=0)
+    node_features = pd.read_csv(NODE_FEATURES_PATH, index_col=0)
 
     return {
         "adjacency_matrix": adjacency_matrix,
@@ -68,4 +70,5 @@ def initialize_map():
         "slope_matrix": slope_matrix,
         "kerb_ramps_matrix": kerb_ramps_matrix,
         "sidewalk_width_matrix": sidewalk_width_matrix,
+        "node_features": node_features,
     }
