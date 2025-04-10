@@ -1,3 +1,7 @@
+"""
+Map Initialization Helper.
+"""
+
 import json
 import logging
 
