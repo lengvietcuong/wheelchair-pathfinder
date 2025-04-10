@@ -5,8 +5,10 @@ Main Entry Point for the Wheelchair Path Finder Application.
 import logging
 import math
 import os
+from pathlib import Path
 
 from colorama import Fore, Style
+from PIL import Image
 from tabulate import tabulate
 
 from map_creation.initialize_map import initialize_map
@@ -14,12 +16,13 @@ from path_finding.a_star import AStar
 from path_finding.benchmark import run_full_benchmark
 
 
+MAP_FILE_PATH = Path("map/map.png")
+
 WHEELCHAIR_SPEED_KM_PER_H = 4.0
 WHEELCHAIR_SPEED_M_PER_S = WHEELCHAIR_SPEED_KM_PER_H * 1_000 / (60 * 60)
 
 TEST_CASE_COUNT = 20
 RUNS_PER_TEST_CASE = 5
-
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -94,7 +97,7 @@ def main():
         # Display the results
         print(f"\n{Fore.BLACK}{'=' * terminal_width}{Style.RESET_ALL}")
         print(
-            f"Path: {Fore.MAGENTA}{f"  {Fore.CYAN}⮕{Fore.MAGENTA}  ".join(result.path)}{Style.RESET_ALL}"
+            f"Path: {Fore.MAGENTA}{f'  {Fore.CYAN}⮕{Fore.MAGENTA}  '.join(result.path)}{Style.RESET_ALL}"
         )
         print(
             f"Distance: {Fore.CYAN}{round(result.distance):,} meters{Style.RESET_ALL}"
@@ -133,6 +136,13 @@ def main():
         print(tabulate(average_results.values, headers=headers, tablefmt="plain"))
         print(f"{Fore.BLACK}{'=' * terminal_width}{Style.RESET_ALL}")
 
+    def handle_view_map():
+        """Open the map image using PIL (Pillow)."""
+        print(f"{Fore.LIGHTBLACK_EX}Opening image...{Style.RESET_ALL}")
+        image = Image.open(MAP_FILE_PATH)
+        image.show(title="Map")
+        print(f"{Fore.CYAN}Image opened!{Style.RESET_ALL}")
+
     # Set up the map
     (
         adjacency_matrix,
@@ -160,15 +170,22 @@ ____       _   _       _____ _           _
         print("\nWhat would you like to do?")
         print(f" {Fore.MAGENTA}1.{Style.RESET_ALL} Run path finder")
         print(f" {Fore.MAGENTA}2.{Style.RESET_ALL} Run benchmark")
-        print(f" {Fore.MAGENTA}3.{Style.RESET_ALL} Exit")
+        print(f" {Fore.MAGENTA}3.{Style.RESET_ALL} View map")
+        print(f" {Fore.MAGENTA}4.{Style.RESET_ALL} Exit")
         choice = input(f"\n{Fore.CYAN}>>>{Style.RESET_ALL} Your choice: ").strip()
-        if choice == "1":
-            handle_run_path_finder()
-        elif choice == "2":
-            handle_run_benchmark()
-        else:
-            print(f"{Fore.MAGENTA}Thank you. Goodbye!{Style.RESET_ALL}")
-            break
+        try:
+            if choice == "1":
+                handle_run_path_finder()
+            elif choice == "2":
+                handle_run_benchmark()
+            elif choice == "3":
+                handle_view_map()
+            else:
+                print(f"{Fore.MAGENTA}Thank you. Goodbye!{Style.RESET_ALL}")
+                break
+        except Exception as error:
+            print(f"{Fore.RED}Error: {error}{Style.RESET_ALL}")
+            print(f"{Fore.LIGHTBLACK_EX}Please try again.{Style.RESET_ALL}")
 
 
 if __name__ == "__main__":
