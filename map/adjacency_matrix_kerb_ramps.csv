@@ -1,24 +1,24 @@
 ,Central Park,Robert Lehman Collection Library,Great Lawn Softball Field #1,Shakespeare Garden,The Central Park Turtle Pond,Petrie Court Cafe,South Gate House,Summit Rock,Seneca Village Site,Bridge No. 27,Tanner spring,Oak Bridge,Pinetum Playground,The Beresford,Cedar Hill,Noi Due Cafe,Dino Store,East Pinetum,The Triplets Bridge,Arthur Ross Pinetum,The Ramble,Greywacke Arch,Neue Galerie New York
-Central Park,,0,0,0,0,,0,1,,,0,,,,1,1,,,,,,,
-Robert Lehman Collection Library,1,,,,0,,,,,,,,,,,,,,,,,,1
-Great Lawn Softball Field #1,1,,,0,0,1,,,,,,,,,,,,1,,,,,
-Shakespeare Garden,1,,0,,,,,,0,,0,,,0,,,,,1,,,,
-The Central Park Turtle Pond,1,1,1,,,,,,,,,1,,,,,0,,,,,,
-Petrie Court Cafe,,,0,,,,0,,,,,,,,,,,,,,,0,1
-South Gate House,0,,,,,1,,,,,,,,,,,,,,,,,1
-Summit Rock,1,,,,,,,,0,,,,,0,,,0,,,,,,
-Seneca Village Site,,,,0,,,,1,,0,,,,,,,,,,,,,
-Bridge No. 27,,,,,,,,,0,,0,0,,,,,,,,,,,
-Tanner spring,1,,,0,,,,,,1,,0,,,0,,,,,,,,
-Oak Bridge,,,,,0,,,,,0,1,,,1,1,,,,,,1,,
-Pinetum Playground,,,,,,,,,,,,,,,,,,,,1,,,
-The Beresford,,,,0,,,,0,,,,0,,,,1,,,,,,,
+Central Park,,1,0,1,0,,0,1,,,0,,,,0,1,,,,,,,
+Robert Lehman Collection Library,0,,,,1,,,,,,,,,,,,,,,,,,1
+Great Lawn Softball Field #1,0,,,0,1,1,,,,,,,,,,,,0,,,,,
+Shakespeare Garden,1,,0,,,,,,0,,0,,,1,,,,,1,,,,
+The Central Park Turtle Pond,1,1,1,,,,,,,,,0,,,,,1,,,,,,
+Petrie Court Cafe,,,1,,,,0,,,,,,,,,,,,,,,1,1
+South Gate House,1,,,,,0,,,,,,,,,,,,,,,,,0
+Summit Rock,0,,,,,,,,0,,,,,1,,,0,,,,,,
+Seneca Village Site,,,,0,,,,1,,1,,,,,,,,,,,,,
+Bridge No. 27,,,,,,,,,0,,1,0,,,,,,,,,,,
+Tanner spring,0,,,0,,,,,,0,,1,,,1,,,,,,,,
+Oak Bridge,,,,,1,,,,,1,0,,,1,0,,,,,,1,,
+Pinetum Playground,,,,,,,,,,,,,,,,,,,,0,,,
+The Beresford,,,,0,,,,0,,,,1,,,,0,,,,,,,
 Cedar Hill,1,,,,,,,,,,1,0,,,,0,,,,,,,
 Noi Due Cafe,0,,,,,,,,,,,,,0,0,,,,,,,,
-Dino Store,,,,,1,,,1,,,,,,,,,,,,,,,
-East Pinetum,,,1,,,,,,,,,,,,,,,,,,,,0
-The Triplets Bridge,,,,1,,,,,,,,,,,,,,,,,,,
+Dino Store,,,,,0,,,1,,,,,,,,,,,,,,,
+East Pinetum,,,1,,,,,,,,,,,,,,,,,,,,1
+The Triplets Bridge,,,,0,,,,,,,,,,,,,,,,,,,
 Arthur Ross Pinetum,,,,,,,,,,,,,0,,,,,,,,,,
-The Ramble,,,,,,,,,,,,0,,,,,,,,,,,0
+The Ramble,,,,,,,,,,,,1,,,,,,,,,,,0
 Greywacke Arch,,,,,,0,,,,,,,,,,,,,,,,,
-Neue Galerie New York,,0,,,,1,1,,,,,,,,,,,1,,,0,,
+Neue Galerie New York,,0,,,,0,1,,,,,,,,,,,1,,,0,,

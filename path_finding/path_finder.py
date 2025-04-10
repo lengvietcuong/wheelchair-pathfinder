@@ -23,7 +23,7 @@ def calculate_accessibility_costs(
 
     Args:
         adjacency_matrix (pd.DataFrame): Base adjacency matrix with distances between nodes.
-        slope_df (pd.DataFrame): Matrix of slope percentages between nodes.
+        slope_df (pd.DataFrame): Matrix of slope angles between nodes (0-45 degrees).
         kerb_ramps_df (pd.DataFrame): Matrix indicating presence (1) or absence (0) of kerb ramps.
         sidewalk_width_df (pd.DataFrame): Matrix of sidewalk widths (in meters) between nodes.
 
@@ -48,14 +48,12 @@ def calculate_accessibility_costs(
             kerb = kerb_ramps_df.loc[i, j]
             width = sidewalk_width_df.loc[i, j]
 
-            # Slope factor: Steeper slopes increase cost linearly (20% increase per 1% slope)
-            slope_factor = 1 + (slope / 5)
-
+            # Slope factor: Linear scale where 0° -> 1x, 45° -> 5x
+            slope_factor = 1 + (slope / 45 * 4)
             # Kerb factor: Missing kerb ramps double the cost
             kerb_factor = 2 if kerb == 0 else 1
-
-            # Width factor: Narrower sidewalks increase cost inversely
-            width_factor = max(1, 1.2 / width)
+            # Width factor: Widths ≥ 1.5 meters have no penalty, 0.9 meters doubles the cost
+            width_factor = 1 + (max(0, (1.5 - width)) / (1.5 - 0.9))
 
             cost_multiplier = slope_factor * kerb_factor * width_factor
             accessibility_df.loc[i, j] = distance * cost_multiplier

@@ -1,24 +1,24 @@
 ,has_accessible_restroom,has_accessible_parking,has_accessible_entrance,has_rest_area
-Central Park,True,True,True,False
-Robert Lehman Collection Library,True,False,True,True
-Great Lawn Softball Field #1,False,False,True,False
-Shakespeare Garden,False,True,False,True
-The Central Park Turtle Pond,True,False,True,True
-Petrie Court Cafe,True,False,False,True
-South Gate House,False,True,False,False
-Summit Rock,False,True,True,False
-Seneca Village Site,False,True,True,False
-Bridge No. 27,True,False,True,False
-Tanner spring,False,True,True,True
-Oak Bridge,True,True,False,True
-Pinetum Playground,False,True,True,False
-The Beresford,False,True,False,True
-Cedar Hill,True,True,False,False
-Noi Due Cafe,True,True,True,True
-Dino Store,False,True,True,False
-East Pinetum,False,True,False,True
-The Triplets Bridge,True,False,True,False
-Arthur Ross Pinetum,True,True,False,False
-The Ramble,False,True,True,True
-Greywacke Arch,True,False,False,False
-Neue Galerie New York,True,False,False,False
+Central Park,False,False,True,False
+Robert Lehman Collection Library,False,False,False,False
+Great Lawn Softball Field #1,False,True,True,False
+Shakespeare Garden,False,False,False,False
+The Central Park Turtle Pond,True,True,False,False
+Petrie Court Cafe,False,False,False,True
+South Gate House,True,True,False,False
+Summit Rock,False,False,True,False
+Seneca Village Site,False,False,False,False
+Bridge No. 27,True,False,False,False
+Tanner spring,False,False,False,False
+Oak Bridge,False,True,False,False
+Pinetum Playground,True,False,False,False
+The Beresford,False,True,True,True
+Cedar Hill,False,False,False,False
+Noi Due Cafe,False,False,False,False
+Dino Store,False,True,False,True
+East Pinetum,False,False,True,False
+The Triplets Bridge,False,False,False,False
+Arthur Ross Pinetum,False,False,False,False
+The Ramble,True,False,False,False
+Greywacke Arch,False,False,False,True
+Neue Galerie New York,False,False,False,False

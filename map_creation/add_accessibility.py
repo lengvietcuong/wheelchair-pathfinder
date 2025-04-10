@@ -39,32 +39,37 @@ def generate_accessibility_features(
     random.seed(seed)
     np.random.seed(seed)
 
-    # Load adjacency matrix and replace 'inf'
+    # Load adjacency matrix
     df = pd.read_csv(ADJACENCY_MATRIX_PATH, index_col=0).replace("inf", np.inf)
     locations = df.index.tolist()
 
-    # Initialize feature matrices
+    # Create feature matrices
     slope_df = pd.DataFrame(index=locations, columns=locations)
     kerb_ramps_df = pd.DataFrame(index=locations, columns=locations)
     sidewalk_width_df = pd.DataFrame(index=locations, columns=locations)
-
-    # Populate feature matrices
     for i in locations:
         for j in locations:
-            dist = df.loc[i, j]
-            if dist == np.inf or dist <= 0:
+            distance = df.loc[i, j]
+            if np.isinf(distance) or distance <= 0:  # Skip if no path
                 continue
-            slope_df.loc[i, j] = round(random.uniform(0, 15), 1)
+            
+            # The slope angle is either 0° (50% chance) or a random angle between 0° and 45°
+            slope_df.loc[i, j] = (
+                0 if random.random() < 0.5 else round(random.uniform(0, 45), 1)
+            )
+            # Kerp ramps are either present (1) or absent (0), with 50/50 chance
             kerb_ramps_df.loc[i, j] = random.randint(0, 1)
-            sidewalk_width_df.loc[i, j] = round(random.uniform(0.9, 2.5), 1)
+            # Sidewalk width randomized between 0.9m and 3.0m
+            sidewalk_width_df.loc[i, j] = round(random.uniform(0.9, 3.0), 1)
 
-    # Generate node-level accessibility features
+    # Create accessibility features for each location
+    # Each feature has a 25% chance of being present
     node_features = {
         loc: {
-            "has_accessible_restroom": random.choice([True, False]),
-            "has_accessible_parking": random.choice([True, False]),
-            "has_accessible_entrance": random.choice([True, False]),
-            "has_rest_area": random.choice([True, False]),
+            "has_accessible_restroom": random.random() < 0.25,
+            "has_accessible_parking": random.random() < 0.25,
+            "has_accessible_entrance": random.random() < 0.25,
+            "has_rest_area": random.random() < 0.25,
         }
         for loc in locations
     }
